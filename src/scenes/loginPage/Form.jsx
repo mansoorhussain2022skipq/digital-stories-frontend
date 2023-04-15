@@ -68,7 +68,7 @@ const Form = () => {
       formData.append("picturePath", values.picture.name);
 
       const { data } = await axios.post(
-        `http://localhost:3001/auth/register`,
+        `https://digital-stories.cyclic.app/auth/register`,
         formData
       );
 
@@ -93,7 +93,7 @@ const Form = () => {
   const login = async (values, onSubmitProps) => {
     try {
       const { data } = await axios.post(
-        `http://localhost:3001/auth/login`,
+        `https://digital-stories.cyclic.app/auth/login`,
         values
       );
 
