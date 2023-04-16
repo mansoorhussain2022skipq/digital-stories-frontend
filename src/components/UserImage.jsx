@@ -1,4 +1,5 @@
 import { Box } from "@mui/material";
+import { apiUrl } from "../config/apiUrl";
 
 const UserImage = ({ image, size = "60px" }) => {
   return (
@@ -8,7 +9,7 @@ const UserImage = ({ image, size = "60px" }) => {
         width={size}
         height={size}
         alt="user"
-        src={`https://digital-stories.cyclic.app/assets/${image}`}
+        src={`${apiUrl}/assets/${image}`}
       />
     </Box>
   );

@@ -76,3 +76,8 @@ button:focus-visible {
   border-radius: 7px;
   width: 12rem;
 }
+
+.image_preview {
+  width: 70px;
+  height: 70px;
+}

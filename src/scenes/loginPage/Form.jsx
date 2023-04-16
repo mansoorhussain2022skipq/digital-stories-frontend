@@ -12,6 +12,7 @@ import {
   useMediaQuery,
   Typography,
   useTheme,
+  CircularProgress,
 } from "@mui/material";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import { setLogin } from "../../state";
@@ -25,7 +26,7 @@ const registerSchema = yup.object().shape({
   password: yup.string().required("required"),
   location: yup.string().required("required"),
   occupation: yup.string().required("required"),
-  picture: yup.string().required("required"),
+  picture: yup.string(),
 });
 
 const loginSchema = yup.object().shape({
@@ -51,6 +52,9 @@ const initialValuesLogin = {
 const Form = () => {
   const [pageType, setPageType] = useState("login");
   const [authErrors, setAuthErrors] = useState({});
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [preview, setPreview] = useState("");
   const { palette } = useTheme();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -61,16 +65,15 @@ const Form = () => {
   const register = async (values, onSubmitProps) => {
     try {
       // this allows us to send form info with image
+
       const formData = new FormData();
       for (let value in values) {
         formData.append(value, values[value]);
       }
-      formData.append("picturePath", values.picture.name);
+      if (values.picture) formData.append("picturePath", values.picture.name);
+      else formData.append("picturePath", "");
 
-      const { data } = await axios.post(
-        `https://digital-stories.cyclic.app/auth/register`,
-        formData
-      );
+      const { data } = await axios.post(`${apiUrl}/auth/register`, formData);
 
       onSubmitProps.resetForm();
 
@@ -82,6 +85,7 @@ const Form = () => {
       );
       navigate("/home");
     } catch (ex) {
+      console.log(ex);
       if (ex.response && ex.response.status === 500) {
         setAuthErrors({
           registerError: ex.response.data.msg,
@@ -92,19 +96,26 @@ const Form = () => {
 
   const login = async (values, onSubmitProps) => {
     try {
-      const { data } = await axios.post(
-        `https://digital-stories.cyclic.app/auth/login`,
-        values
-      );
+      if (!loading) {
+        setSuccess(false);
+        setLoading(true);
 
-      dispatch(
-        setLogin({
-          user: data.user,
-          token: data.token,
-        })
-      );
-      navigate("/home");
+        const { data } = await axios.post(`${apiUrl}/auth/login`, values);
+
+        dispatch(
+          setLogin({
+            user: data.user,
+            token: data.token,
+          })
+        );
+
+        setSuccess(true);
+        setLoading(false);
+
+        navigate("/home");
+      }
     } catch (ex) {
+      setLoading(false);
       if (ex.response && ex.response.status === 400) {
         setAuthErrors({
           loginError: ex.response.data.msg,
@@ -198,9 +209,10 @@ const Form = () => {
                   <Dropzone
                     acceptedFiles=".jpg,.jpeg,.png"
                     multiple={false}
-                    onDrop={(acceptedFiles) =>
-                      setFieldValue("picture", acceptedFiles[0])
-                    }
+                    onDrop={(acceptedFiles) => {
+                      setFieldValue("picture", acceptedFiles[0]);
+                      setPreview(URL.createObjectURL(acceptedFiles[0]));
+                    }}
                   >
                     {({ getRootProps, getInputProps }) => (
                       <Box
@@ -214,6 +226,12 @@ const Form = () => {
                           <p>Add Picture Here</p>
                         ) : (
                           <FlexBetween>
+                            <img
+                              src={preview}
+                              alt="preview"
+                              className="image_preview"
+                              onLoad={() => URL.revokeObjectURL(preview)}
+                            />
                             <Typography>{values.picture.name}</Typography>
                             <EditOutlinedIcon />
                           </FlexBetween>
@@ -259,6 +277,7 @@ const Form = () => {
             <Button
               fullWidth
               type="submit"
+              disabled={loading}
               sx={{
                 m: "2rem 0",
                 p: "1rem",
@@ -271,6 +290,19 @@ const Form = () => {
             >
               {isLogin ? "LOGIN" : "REGISTER"}
             </Button>
+            {isLogin && loading && (
+              <CircularProgress
+                size={37}
+                sx={{
+                  color: "black",
+                  position: "absolute",
+                  top: "50%",
+                  left: "49.5%",
+                  marginTop: "-12px",
+                  marginLeft: "-12px",
+                }}
+              />
+            )}
             <Typography
               onClick={() => {
                 setPageType(isLogin ? "register" : "login");
