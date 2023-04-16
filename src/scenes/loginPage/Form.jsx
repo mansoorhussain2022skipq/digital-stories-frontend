@@ -85,7 +85,6 @@ const Form = () => {
       );
       navigate("/home");
     } catch (ex) {
-      console.log(ex);
       if (ex.response && ex.response.status === 500) {
         setAuthErrors({
           registerError: ex.response.data.msg,
