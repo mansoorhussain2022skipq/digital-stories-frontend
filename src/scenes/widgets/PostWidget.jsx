@@ -11,7 +11,7 @@ import FlexBetween from "../../components/FlexBetween";
 import Friend from "../../components/Friend";
 import WidgetWrapper from "../../components/WidgetWrapper";
 import { setPost } from "../../state";
-import { apiUrl } from "../../config/apiUrl";
+import { prodUrl } from "../../config/apiUrl";
 import axios from "axios";
 
 const PostWidget = ({
@@ -37,7 +37,7 @@ const PostWidget = ({
   const primary = palette.primary.main;
 
   const patchLike = async () => {
-    const response = await fetch(`${apiUrl}/posts/${postId}/like`, {
+    const response = await fetch(`${prodUrl}/posts/${postId}/like`, {
       method: "PATCH",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -66,7 +66,7 @@ const PostWidget = ({
           height="auto"
           alt="post"
           style={{ borderRadius: "0.75rem", marginTop: "0.75rem" }}
-          src={`${apiUrl}/assets/${picturePath}`}
+          src={`${prodUrl}/assets/${picturePath}`}
         />
       )}
       <FlexBetween mt="0.25rem">

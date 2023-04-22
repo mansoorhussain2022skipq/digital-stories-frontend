@@ -17,7 +17,7 @@ import {
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import { setLogin } from "../../state";
 import FlexBetween from "../../components/FlexBetween";
-import { apiUrl } from "../../config/apiUrl";
+import { prodUrl } from "../../config/apiUrl";
 
 const registerSchema = yup.object().shape({
   firstName: yup.string().required("required"),
@@ -73,7 +73,7 @@ const Form = () => {
       if (values.picture) formData.append("picturePath", values.picture.name);
       else formData.append("picturePath", "");
 
-      const { data } = await axios.post(`${apiUrl}/auth/register`, formData);
+      const { data } = await axios.post(`${prodUrl}/auth/register`, formData);
 
       onSubmitProps.resetForm();
 
@@ -99,7 +99,7 @@ const Form = () => {
         setSuccess(false);
         setLoading(true);
 
-        const { data } = await axios.post(`${apiUrl}/auth/login`, values);
+        const { data } = await axios.post(`${prodUrl}/auth/login`, values);
 
         dispatch(
           setLogin({
