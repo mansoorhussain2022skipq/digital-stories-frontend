@@ -15,7 +15,7 @@ import {
 import { setFriends } from "../state";
 import FlexBetween from "../components/FlexBetween";
 import UserImage from "./UserImage";
-import { prodUrl } from "../config/apiUrl";
+import { apiUrl } from "../config/apiUrl";
 
 const Friend = ({ friendId, name, subtitle, userPicturePath }) => {
   const [anchorEl, setAnchorEl] = useState(null);

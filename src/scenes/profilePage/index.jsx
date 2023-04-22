@@ -7,7 +7,7 @@ import FriendListWidget from "../widgets/FriendListWidget";
 import MyPostWidget from "../widgets/MyPostWidget";
 import PostsWidget from "../widgets/PostsWidget";
 import UserWidget from "../widgets/UserWidget";
-import { prodUrl } from "../../config/apiUrl";
+import { apiUrl } from "../../config/apiUrl";
 import axios from "axios";
 
 const ProfilePage = () => {
@@ -17,7 +17,7 @@ const ProfilePage = () => {
   const isNonMobileScreens = useMediaQuery("(min-width:1000px)");
 
   const getUser = async () => {
-    const response = await fetch(`${prodUrl}/users/${userId}`, {
+    const response = await fetch(`${apiUrl}/users/${userId}`, {
       method: "GET",
       headers: { Authorization: `Bearer ${token}` },
     });

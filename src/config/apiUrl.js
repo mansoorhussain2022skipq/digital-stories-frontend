@@ -1,2 +1,3 @@
-export const devUrl = "http://localhost:3001";
-export const prodUrl = "https://digital-stories.cyclic.app";
+export const apiUrl = "https://digital-stories.cyclic.app";
+
+//  localhost Url: "http://localhost:3001"

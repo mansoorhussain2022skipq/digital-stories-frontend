@@ -24,7 +24,7 @@ import FlexBetween from "../../components/FlexBetween";
 import UserImage from "../../components/UserImage";
 import WidgetWrapper from "../../components/WidgetWrapper";
 import { setPosts } from "../../state";
-import { prodUrl } from "../../config/apiUrl";
+import { apiUrl } from "../../config/apiUrl";
 import axios from "axios";
 
 const MyPostWidget = ({ picturePath }) => {
@@ -48,7 +48,7 @@ const MyPostWidget = ({ picturePath }) => {
       formData.append("picturePath", image.name);
     }
 
-    const response = await fetch(`${prodUrl}/posts`, {
+    const response = await fetch(`${apiUrl}/posts`, {
       method: "POST",
       headers: { Authorization: `Bearer ${token}` },
       body: formData,
